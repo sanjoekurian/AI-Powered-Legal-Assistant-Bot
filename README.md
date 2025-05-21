@@ -1,3 +1,12 @@
+---
+title: Legal Assistant Bot 🤖📚
+emoji: 🧑‍⚖️
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_file: app.py
+pinned: true
+---
 # Legal Assistant Bot
 
 A multi-agent chatbot that answers questions about Indian legal procedures using a combination of provided legal documents and advanced language model knowledge. The system uses semantic search to find relevant information and a large language model to provide comprehensive, easy-to-understand answers.
