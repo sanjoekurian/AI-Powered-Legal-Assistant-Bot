@@ -1,6 +1,9 @@
 import os
 from typing import Dict
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -17,6 +20,12 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Set up templates
+templates = Jinja2Templates(directory="templates")
+
 # Initialize agents
 query_agent_litigation = QueryAgent("vectorstore/guide_litigation")
 query_agent_corporate = QueryAgent("vectorstore/corporate_laws")
@@ -24,6 +33,11 @@ summarizer = SummarizerAgent()
 
 class Question(BaseModel):
     question: str
+
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request):
+    """Serve the main page"""
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/ask")
 async def ask_question(question: Question) -> Dict[str, str]:
@@ -55,7 +69,6 @@ async def ask_question(question: Question) -> Dict[str, str]:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/")
-async def root():
-    """Health check endpoint"""
-    return {"status": "healthy", "message": "Legal Assistant Bot is running"} 
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000) 

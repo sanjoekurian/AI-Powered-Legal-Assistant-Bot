@@ -9,8 +9,8 @@ A multi-agent chatbot that answers questions about Indian legal procedures using
 - Combines document knowledge with LLM's general legal knowledge
 - Provides transparent, source-aware responses
 - Simplifies complex legal language using Groq's LLaMA3-70B
-- FastAPI backend with optional Streamlit frontend
-- Maintains chat history in the Streamlit interface
+- Modern, responsive web interface
+- Single-file deployment
 
 ## How It Works
 
@@ -86,25 +86,21 @@ python ingest.py
 
 ## Running the Application
 
-1. Start the FastAPI backend:
+Simply run the main application file:
 ```bash
-uvicorn app:app --reload --port 8000
+python app.py
 ```
 
-2. In a new terminal, start the Streamlit frontend (optional):
-```bash
-streamlit run streamlit_app.py
-```
-
-3. Access the application:
+The application will be available at:
+- Web interface: http://localhost:8000
 - API documentation: http://localhost:8000/docs
-- Streamlit interface: http://localhost:8501
 
 ## Usage
 
-1. Enter your legal question in the text input field
-2. Click "Ask" to get a response
-3. The bot will:
+1. Open your web browser and navigate to http://localhost:8000
+2. Enter your legal question in the text input field
+3. Click "Ask" or press Enter to submit your question
+4. The bot will:
    - Determine if your question is about litigation or corporate law
    - Find relevant sections from the appropriate document
    - Combine document information with general legal knowledge
@@ -112,7 +108,7 @@ streamlit run streamlit_app.py
      - Information from the documents
      - Supplementary general knowledge
      - A clear, simplified summary
-   - Display the answer with previous questions in the chat history
+   - Display the answer in the chat interface
 
 ## API Endpoints
 
@@ -123,23 +119,26 @@ streamlit run streamlit_app.py
   }
   ```
 
-- `GET /`: Health check endpoint
+- `GET /`: Web interface
 
 ## Project Structure
 
 ```
 legal_chatbot/
-├── app.py                     # FastAPI API entrypoint
+├── app.py                     # Main application file (FastAPI + Web Interface)
 ├── agents/
 │   ├── query_agent.py         # Retrieval logic and document routing
 │   └── summarizer.py          # LLM-based knowledge integration and summarization
 ├── data/
 │   ├── guide_litigation.pdf   # Source legal document 1
 │   └── corporate_laws.pdf     # Source legal document 2
-├── ingest.py                  # Embeds PDFs using FAISS
-├── vectorstore/               # Stores FAISS index files
-├── requirements.txt
-└── streamlit_app.py           # Optional Streamlit frontend
+├── static/
+│   └── styles.css            # CSS styles for the web interface
+├── templates/
+│   └── index.html           # HTML template for the web interface
+├── ingest.py                # Embeds PDFs using FAISS
+├── vectorstore/            # Stores FAISS index files
+└── requirements.txt
 ```
 
 ## Technical Details
@@ -161,6 +160,12 @@ legal_chatbot/
 - Clear separation of document and general knowledge
 - Simplified language for better understanding
 - Maintains legal accuracy while being accessible
+
+### Web Interface
+- Modern, responsive design
+- Real-time chat-like interface
+- Support for markdown formatting in responses
+- Mobile-friendly layout
 
 ## License
 
